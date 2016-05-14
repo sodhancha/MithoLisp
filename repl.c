@@ -1,7 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-/* Declare a buffer for user input of size 2048 */
-static char input[2048];
+#include <editline/readline.h>
 
 int main(int argc, char** argv) {
 
@@ -12,15 +12,21 @@ int main(int argc, char** argv) {
   /* In a never ending loop */
   while (1) {
 
-    /* Output our prompt */
-    fputs("lispy> ", stdout);
+    /* Output our prompt and get input */
+    char* input = readline("MithoLisp> ");
+    
+    /* Add input to history */
+    add_history(input);
+    
+    /* Echo input back to user */    
+    printf("ok baby now do: %s\n", input);
 
-    /* Read a line of user input of maximum size 2048 */
-    fgets(input, 2048, stdin);
+    /* Free retrieved input */
+    free(input);
 
-    /* Echo input back to user */
-    printf("No you're a %s", input);
   }
 
   return 0;
 }
+
+//cc -std=c99 -Wall repl.c -ledit -o repl
